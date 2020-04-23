@@ -26,7 +26,7 @@ def get_homework_statuses(current_timestamp):
     params = {'from_date':current_timestamp}
     url = 'https://praktikum.yandex.ru/api/user_api/homework_statuses/'
     homework_statuses = requests.get(url = url, headers = headers, params = params).json()
-    return homework_statuses#.json()
+    return homework_statuses
 
 
 def send_message(message):
@@ -37,14 +37,12 @@ def send_message(message):
 
 def main():
     current_timestamp = int(time.time())  # начальное значение timestamp - текущее unix время
-
     while True:
         try:
             new_homework = get_homework_statuses(current_timestamp)
             if new_homework.get('homeworks'):
                 send_message(parse_homework_status(new_homework.get('homeworks')[0]))
             current_timestamp = new_homework.get('current_date')  # обновить timestamp
-            print(new_homework)
             time.sleep(1200)  # опрашивать раз в 20 минут
 
         except Exception as e:
