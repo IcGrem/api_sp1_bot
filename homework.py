@@ -13,6 +13,7 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 PROXY_ADDRES = os.getenv('PROXY')
 
+
 def parse_homework_status(homework):
     homework_name = homework.get('homework_name')
     if homework.get('status') == 'rejected':
