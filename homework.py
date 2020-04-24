@@ -10,7 +10,8 @@ load_dotenv()
 PRACTICUM_TOKEN = os.getenv("PRACTICUM_TOKEN")
 TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
 CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
-
+PRACTICUM_URL = 'https://praktikum.yandex.ru/api/user_api/homework_statuses/'
+PROXY_ADDRES = os.getenv('PROXY')
 
 def parse_homework_status(homework):
     homework_name = homework.get('homework_name')
@@ -24,13 +25,13 @@ def parse_homework_status(homework):
 def get_homework_statuses(current_timestamp):
     headers = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
     params = {'from_date':current_timestamp}
-    url = 'https://praktikum.yandex.ru/api/user_api/homework_statuses/'
+    url = PRACTICUM_URL
     homework_statuses = requests.get(url = url, headers = headers, params = params).json()
     return homework_statuses
 
 
 def send_message(message):
-    proxy = telegram.utils.request.Request(proxy_url='socks5://85.10.235.14:1080')  # изменить
+    proxy = telegram.utils.request.Request(proxy_url = PROXY_ADDRES)
     bot = telegram.Bot(token = TELEGRAM_TOKEN, request = proxy)
     return bot.send_message(chat_id = CHAT_ID, text = message)
 
